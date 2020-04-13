@@ -1,0 +1,48 @@
+{
+  "name": "app-reviews",
+  "version": "1.0.0",
+  "description": "This module help you to have access to latest reviews in App Store and Google Play Store",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json"
+  },
+  "keywords": [
+    "AppStore",
+    "Google",
+    "PlayStore",
+    "Reviews",
+    "Firebase",
+    "Function",
+    "AWS"
+  ],
+  "author": "Arman Soudi",
+  "license": "MIT",
+  "directories": {
+    "example": "example",
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/armanso/app-reviews.git"
+  },
+  "bugs": {
+    "url": "https://github.com/armanso/app-reviews/issues"
+  },
+  "homepage": "https://github.com/armanso/app-reviews#readme",
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "prettier": "^2.0.4",
+    "tslint": "^6.1.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "android-versions": "^1.5.0",
+    "axios": "^0.19.2",
+    "google-play-scraper": "^7.1.2",
+    "googleapis": "^48.0.0"
+  }
+}

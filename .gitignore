@@ -1,4 +1,6 @@
+.DS_Store
 node_modules
 /lib
 api-key.json
 published_reviews.json
+/src/example/example-dev.ts

@@ -1,0 +1,7 @@
+src
+tsconfig.json
+tslint.json
+.prettierrc
+*-*.json
+*_*.json
+lib/example
