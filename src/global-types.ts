@@ -8,17 +8,19 @@ export type Config = {
     retrivePublishedReviewsList: RetrivePublishedReviews,
     onNewMessageAvailable: NewMessageAvailble,
     reviewLimit?: number,
+    verbose?: boolean
 }
 
 type StoreConfig = {
     showAppIcon?: boolean,
-    appIcon?: string
+    appIcon?: string,
+    verbose?: boolean
 }
 
 export interface AppStoreConfig extends StoreConfig {
     id: string,
     generateMessageFromReview?: AppStoreMessageGenerator,
-    pageRange?:number
+    pageRange?: number
     regions: string[] | "all"
 }
 

@@ -13,7 +13,7 @@ export default class PlayStoreReviews {
         let { id } = config
 
         const appInformation = await app({ appId: id })
-        const result = await this.fetchPlayStoreReviews(id, config.publisherKey)
+        const result = await this.fetchPlayStoreReviews(id, config.publisherKey, config.verbose)
 
         let reviews: Review[] = []
         const newReviews = reviews.concat(...result).filter((review) => {
@@ -35,13 +35,15 @@ export default class PlayStoreReviews {
         }
     }
 
-    async fetchPlayStoreReviews(appId: string, publisherKey: string) {
+    async fetchPlayStoreReviews(appId: string, publisherKey: string, verbose?: Boolean) {
         //read publisher json key
         var publisherJson
         try {
             publisherJson = JSON.parse(require('fs').readFileSync(publisherKey, 'utf8'))
         } catch (e) {
-            console.warn(e)
+            if (verbose)
+                console.warn(e)
+                
             return []
         }
 
@@ -58,7 +60,8 @@ export default class PlayStoreReviews {
 
             return res.data.reviews.map((review) => this.parsePlayStoreReview(review, appId))
         } catch (e) {
-            console.warn(e)
+            if (verbose)
+                console.warn(e)
             return []
         }
     }

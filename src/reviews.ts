@@ -23,6 +23,9 @@ export default class Reviews {
 
         const requests = this.config.apps.map(app => {
             const storeType = (app.id.indexOf("\.") > -1) ? StoreType.GOOGLE_PLAY : StoreType.APP_STORE
+            if (this.config.verbose === undefined)
+                app.verbose = false
+                
             if (storeType == StoreType.GOOGLE_PLAY) {
                 return this.playStoreReviews.fetch(app as PlayStoreConfig, publishedReviews)
             } else if (storeType == StoreType.APP_STORE) {

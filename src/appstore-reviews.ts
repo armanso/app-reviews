@@ -8,7 +8,7 @@ export default class AppStoreReviews {
     STORE_NAME = "App Store"
 
     async fetch(config: AppStoreConfig, publishedReviews: PublishedReviews): Promise<Data> {
-        let { id, regions } = config
+        let { id, regions, verbose } = config
 
         const appInformation = await this.fetchAppInformation(id)
 
@@ -20,7 +20,7 @@ export default class AppStoreReviews {
             throw "At least one region should be define in configuration"
         }
 
-        const requests = (regions as string[]).map(region => this.fetchAppStoreReviews(id, config.pageRange || 5, region))
+        const requests = (regions as string[]).map(region => this.fetchAppStoreReviews(id, config.pageRange || 5, region, verbose))
         const result = await Promise.all(requests)
 
         let reviews: Review[] = []
@@ -61,29 +61,28 @@ export default class AppStoreReviews {
             }
 
         } catch (err) {
-            console.error(`Something went wrong, ${err}`)
             throw err
         }
     }
 
-    async fetchAppStoreReviews(appId: string, pagesInRange: number, region: string) {
+    async fetchAppStoreReviews(appId: string, pagesInRange: number, region: string, verbose?: boolean) {
         let reviews: Review[] = []
 
         for (let page = 1; page <= pagesInRange; page++) {
-            let pageReview = await this.fetchAppStoreReviewsByPage(appId, page, region)
+            let pageReview = await this.fetchAppStoreReviewsByPage(appId, page, region, verbose)
             reviews = reviews.concat(pageReview)
         }
 
         return reviews
     }
 
-    async fetchAppStoreReviewsByPage(appId: string, page: number, region: string): Promise<Review[]> {
+    async fetchAppStoreReviewsByPage(appId: string, page: number, region: string, verbose?: boolean): Promise<Review[]> {
         const url = `${this.BASE_URL}/${region}/rss/customerreviews/page=${page}/id=${appId}/sortBy=mostRecent/json`
         try {
             const res = await axios.get(url) as ReviewResponse
             const entries = res.data.feed.entry
 
-            if (entries == null || entries.length == 0) {
+            if (entries == null || entries.length == 0 || !Array.isArray(entries)) {
                 return []
             }
 
@@ -93,7 +92,8 @@ export default class AppStoreReviews {
                 .map((review) => this.parseAppStoreReview(review, region))
 
         } catch (err) {
-            console.error(`Something went wrong, ${err}`)
+            if (verbose)
+                console.error(`Could'nt fetch data from app store "${region}", App store may not support that region`)
             return []
         }
     }
