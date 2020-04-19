@@ -4,7 +4,7 @@
 
 App-Reviews is a nodejs app that monitors App Store and Google Play reviews.
 
-This project is heavily inspired by [ReviewMe](https://www.npmjs.com/package/app-reviews).
+This project is heavily inspired by [ReviewMe](https://github.com/TradeMe/ReviewMe).
 
 # What changed?
 
@@ -71,6 +71,8 @@ const config = {
 * **retrivePublishedReviewsList:** Function to retrive list of latest reviews list from the data source
 
 * **onNewMessageAvailable:** Function that receive list of new reviews message
+
+* **verbose:** When enabled, log messages will be printed to the console
 
 ### App options
 
