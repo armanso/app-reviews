@@ -2,7 +2,8 @@
   "name": "app-reviews",
   "version": "1.0.0",
   "description": "This module help you to have access to latest reviews in App Store and Google Play Store",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "type": "lib/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
