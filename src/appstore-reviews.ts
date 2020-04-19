@@ -24,23 +24,20 @@ export default class AppStoreReviews {
         const result = await Promise.all(requests)
 
         let reviews: Review[] = []
-        var newReviews = reviews.concat(...result).filter((review) => {
-            if (publishedReviews[id] !== undefined && publishedReviews[id].indexOf(review.id) >= 0) {
-                return false
-            }
-            return true
+        const newReviews = reviews.concat(...result).filter((review) => {
+            return !(publishedReviews[id] !== undefined && publishedReviews[id].indexOf(review.id) >= 0)
         })
 
-        var newReviewsMap: PublishedReviews = {}
+        const newReviewsMap: PublishedReviews = {}
         newReviewsMap[id] = newReviews.map(this.mapReviewId)
 
         return {
             messages: newReviews.map(review => {
                 if (config.generateMessageFromReview !== undefined) {
                     return config.generateMessageFromReview.call(this, review, appInformation, config)
-                } else {
-                    return this.generateSlackMessage(review, appInformation, config)
                 }
+
+                return this.generateSlackMessage(review, appInformation, config)
             }),
             newReviews: newReviewsMap
         }
@@ -84,7 +81,7 @@ export default class AppStoreReviews {
         const url = `${this.BASE_URL}/${region}/rss/customerreviews/page=${page}/id=${appId}/sortBy=mostRecent/json`
         try {
             const res = await axios.get(url) as ReviewResponse
-            var entries = res.data.feed.entry
+            const entries = res.data.feed.entry
 
             if (entries == null || entries.length == 0) {
                 return []
@@ -95,7 +92,8 @@ export default class AppStoreReviews {
                 .reverse()
                 .map((review) => this.parseAppStoreReview(review, region))
 
-        } catch {
+        } catch (err) {
+            console.error(`Something went wrong, ${err}`)
             return []
         }
     }

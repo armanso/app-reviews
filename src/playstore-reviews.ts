@@ -16,14 +16,11 @@ export default class PlayStoreReviews {
         const result = await this.fetchPlayStoreReviews(id, config.publisherKey)
 
         let reviews: Review[] = []
-        var newReviews = reviews.concat(...result).filter((review) => {
-            if (publishedReviews[id] !== undefined && publishedReviews[id].indexOf(review.id) >= 0) {
-                return false
-            }
-            return true
+        const newReviews = reviews.concat(...result).filter((review) => {
+            return !(publishedReviews[id] !== undefined && publishedReviews[id].indexOf(review.id) >= 0)
         })
 
-        var newReviewsMap: PublishedReviews = {}
+        const newReviewsMap: PublishedReviews = {}
         newReviewsMap[id] = newReviews.map(this.mapReviewId)
 
         return {
@@ -71,7 +68,7 @@ export default class PlayStoreReviews {
     }
 
     parsePlayStoreReview = (entry: androidpublisher_v3.Schema$Review, appId: string): Review => {
-        var comment = entry.comments!![0].userComment!!
+        const comment = entry.comments!![0].userComment!!
 
         return {
             id: entry.reviewId || "NO_REVIEW_ID",
@@ -92,7 +89,7 @@ export default class PlayStoreReviews {
             stars += i < review.rating ? "★" : "☆"
         }
 
-        var color = review.rating >= 4 ? "good" : (review.rating >= 2 ? "warning" : "danger")
+        const color = review.rating >= 4 ? "good" : (review.rating >= 2 ? "warning" : "danger")
 
         var text = ""
         text += review.text + "\n"
@@ -138,7 +135,7 @@ export default class PlayStoreReviews {
     }
 
     getVersionNameForCode = function (versionCode: number) {
-        var version = get(versionCode)
+        const version = get(versionCode)
         if (version != null) {
             return version.semver
         }
